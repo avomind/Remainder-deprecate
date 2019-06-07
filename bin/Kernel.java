@@ -6,5 +6,7 @@ import protocols.KerC;
 import protocols.BindC;
 
 public class Kernel implements Communication<String,BindC>{
-
+  public void post(String info, BindC code){
+    
+  }
 }

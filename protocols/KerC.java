@@ -1,3 +1,4 @@
 package protocols;
 
-public enum KerC{}
+public enum KerC{
+}
