@@ -4,16 +4,20 @@ INTERFACES=Communication
 PROTOCOLS=BindC KerC
 BIN=Cli Kernel
 
-$(MAIN:%=Remainder/%.class):Remainder $(PROTOCOLS:%=Remainder/protocols/%.class) $(INTERFACES:%=Remainder/interfaces/%.class) $(BIN:%=Remainder/bin/%.class) $(MAIN:%=%.java)
+exe: $(MAIN:%=Remainder/%.class)
+	java -cp ./Remainder Remainder
+
+$(MAIN:%=Remainder/%.class):Remainder interfaces protocols bin $(PROTOCOLS:%=Remainder/protocols/%.class) $(INTERFACES:%=Remainder/interfaces/%.class) $(BIN:%=Remainder/bin/%.class) $(MAIN:%=%.java)
 	javac $(MAIN).java -d Remainder/
 
-$(INTERFACES:%=Remainder/interfaces/%.class): $(INTERFACES:%=interfaces/%.java) interfaces
+.SECONDEXPANSION:
+$(INTERFACES:%=Remainder/interfaces/%.class):%.class:interfaces/$$(basename $$(notdir %)).java
 	javac $< -d Remainder/
 
-$(PROTOCOLS:%=Remainder/protocols/%.class): $(PROTOCOLS:%=protocols/%.java) protocols
+$(PROTOCOLS:%=Remainder/protocols/%.class):%.class:protocols/$$(basename $$(notdir %)).java
 	javac $< -d Remainder/
 
-$(BIN:%=Remainder/bin/%.class): $(BIN:%=bin/%.java) bin
+$(BIN:%=Remainder/bin/%.class):%.class:bin/$$(basename $$(notdir %)).java
 	javac $< -d Remainder/
 
 Remainder:
